@@ -7,10 +7,10 @@ $username = $url["user"];
 $password = $url["pass"];
 $database = substr($url["path"], 1);
 
-info($url);
-info($username);
-info($password);
-info($database);
+error_log($url);
+error_log($username);
+error_log($password);
+error_log($database);
 
 return [
 
@@ -113,7 +113,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This table keeps track of all the migrations that have already run for
-    | your application. Using this information, we can determine which of
+    | your application. Using this error_logrmation, we can determine which of
     | the migrations on disk haven't actually been run in the database.
     |
     */
