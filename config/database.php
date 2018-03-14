@@ -7,7 +7,7 @@ $username = $url["user"];
 $password = $url["pass"];
 $database = substr($url["path"], 1);
 
-error_log($url);
+error_log($host);
 error_log($username);
 error_log($password);
 error_log($database);
