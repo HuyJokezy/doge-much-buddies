@@ -12,6 +12,12 @@ error_log($username);
 error_log($password);
 error_log($database);
 
+error_log(env('DB_DATABASE', $database));
+error_log(env('DB_USERNAME', $username));
+error_log(env('DB_HOST', $host));
+error_log(env('DB_PASSWORD', $password));
+error_log(env('DB_SOCKET', 'nosocket'));
+
 return [
 
     /*
