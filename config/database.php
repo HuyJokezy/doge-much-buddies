@@ -1,22 +1,16 @@
 <?php
 
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$mysqlUrl = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-$host = $url["host"];
-$username = $url["user"];
-$password = $url["pass"];
-$database = substr($url["path"], 1);
+$mysqlHost = isset($mysqlUrl['host']) ? $mysqlUrl["host"] : env('DB_HOST');
+$mysqlUserName = isset($mysqlUrl['user']) ? $mysqlUrl["user"] : env('DB_USERNAME');
+$mysqlPassword = isset($mysqlUrl['pass']) ? $mysqlUrl["pass"] : env('DB_PASSWORD');
+$mysqlDatabase = isset($mysqlUrl['pass']) ? substr($mysqlUrl["path"], 1) : env('DB_DATABASE');
 
-error_log($host);
-error_log($username);
-error_log($password);
-error_log($database);
-
-error_log(env('DB_DATABASE', $database));
-error_log(env('DB_USERNAME', $username));
-error_log(env('DB_HOST', $host));
-error_log(env('DB_PASSWORD', $password));
-error_log(env('DB_SOCKET', 'nosocket'));
+error_log($mysqlHost);
+error_log($mysqlUserName);
+error_log($mysqlPassword);
+error_log($mysqlDatabase);
 
 return [
 
@@ -59,11 +53,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => $mysqlHost,
             'port' => env('DB_PORT', '3306'),
-            'database' => $database,
-            'username' => $username,
-            'password' => $password,
+            'database' => $mysqlDatabase,
+            'username' => $mysqlUserName,
+            'password' => $mysqlPassword,
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
