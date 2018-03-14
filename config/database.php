@@ -7,6 +7,11 @@ $username = $url["user"];
 $password = $url["pass"];
 $database = substr($url["path"], 1);
 
+info($url);
+info($username);
+info($password);
+info($database);
+
 return [
 
     /*
