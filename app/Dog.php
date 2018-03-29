@@ -13,7 +13,21 @@ class Dog extends Model
     // Timestamp
     public $timestamps = true;
     
+    /**
+     * Get the owner of the dog
+     * 
+     * @return App\User
+     */
     public function user(){
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Get the images of the dog
+     * 
+     * @return App\DogImage
+     */
+    public function images(){
+        return $this->hasMany('App\DogImage');
     }
 }

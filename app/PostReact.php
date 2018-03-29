@@ -15,11 +15,22 @@ class PostReact extends Model
     // Timestamp
     public $timestamps = false;
     
+    /**
+     * Get owner of the react
+     * 
+     * @return App\User
+     */
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'id', 'owner');
     }
+
+    /**
+     * Get post which reaction belongs to
+     * 
+     * @return App\react
+     */
     public function post(){
-        return $this->belongsTo('App\Post');
+        return $this->belongsTo('App\Post', 'id', 'post_id');
     }
 
     /**

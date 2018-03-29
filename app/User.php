@@ -26,4 +26,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get user's all dogs
+     * 
+     * @return App\Dog
+     */
+    public function dogs(){
+        return $this->hasMany('App\Dog');
+    }
 }

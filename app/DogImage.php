@@ -13,6 +13,11 @@ class DogImage extends Model
     // Timestamp
     public $timestamps = false;
     
+    /**
+     * Get the dog which image belongs to
+     * 
+     * @return App\Dog
+     */
     public function dog(){
         return $this->belongsTo('App\Dog');
     }

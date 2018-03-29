@@ -13,10 +13,21 @@ class PostComment extends Model
     // Timestamp
     public $timestamps = true;
     
+    /**
+     * Get user who created the comment
+     * 
+     * @return App\User
+     */
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'id', 'owner');
     }
+
+    /**
+     * Get the post which comment belongs to 
+     * 
+     * @return App\Post
+     */
     public function post(){
-        return $this->belongsTo('App\Post');
+        return $this->belongsTo('App\Post', 'id', 'post_id');
     }
 }

@@ -7,10 +7,10 @@ $mysqlUserName = isset($mysqlUrl['user']) ? $mysqlUrl["user"] : env('DB_USERNAME
 $mysqlPassword = isset($mysqlUrl['pass']) ? $mysqlUrl["pass"] : env('DB_PASSWORD');
 $mysqlDatabase = isset($mysqlUrl['pass']) ? substr($mysqlUrl["path"], 1) : env('DB_DATABASE');
 
-error_log($mysqlHost);
-error_log($mysqlUserName);
-error_log($mysqlPassword);
-error_log($mysqlDatabase);
+// error_log($mysqlHost);
+// error_log($mysqlUserName);
+// error_log($mysqlPassword);
+// error_log($mysqlDatabase);
 
 return [
 

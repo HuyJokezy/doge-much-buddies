@@ -14,9 +14,22 @@ class PostTag extends Model
     // Timestamp
     public $timestamps = true;
     
-    public function user(){
-        return $this->belongsTo('App\User');
+    /**
+     * Get dog that tagged in the post
+     */
+    public function dogTag(){
+        return $this->hasMany('App\Dog', 'id', 'dog_id');
     }
+
+    /**
+     * Get post 
+     * 
+     * @return App\Post
+     */
+    public function post(){
+        return $this->belongsTo('App\Post', 'id', 'post_id');
+    }
+
 
     /**
      * Set the keys for a save update query.
