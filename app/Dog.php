@@ -19,7 +19,7 @@ class Dog extends Model
      * @return App\User
      */
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'id', 'owner');
     }
 
     /**
@@ -28,6 +28,6 @@ class Dog extends Model
      * @return App\DogImage
      */
     public function images(){
-        return $this->hasMany('App\DogImage');
+        return $this->hasMany('App\DogImage', 'dog_id', 'id');
     }
 }

@@ -19,6 +19,6 @@ class DogImage extends Model
      * @return App\Dog
      */
     public function dog(){
-        return $this->belongsTo('App\Dog');
+        return $this->belongsTo('App\Dog', 'id', 'dog_id');
     }
 }

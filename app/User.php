@@ -33,6 +33,6 @@ class User extends Authenticatable
      * @return App\Dog
      */
     public function dogs(){
-        return $this->hasMany('App\Dog');
+        return $this->hasMany('App\Dog', 'owner', 'id');
     }
 }
