@@ -30,4 +30,13 @@ class Post extends Model
     public function comments(){
         return $this->hasMany('App\PostComment', 'post_id', 'id');
     }
+
+    /**
+     * Get all users who react on post
+     * 
+     * @return App\User
+     */
+    public function reactedBy(){
+        return $this->belongsToMany('App\User', 'post_reacts', 'post_id', 'owner')->withPivot('type');
+    }
 }

@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token',
     ];
 
     /**
@@ -35,5 +35,14 @@ class User extends Authenticatable
      */
     public function dogs(){
         return $this->hasMany('App\Dog', 'owner', 'id');
+    }
+
+    /**
+     * Get all user's following dogs
+     * 
+     * @return App\Dog
+     */
+    public function follows(){
+        return $this->belongsToMany('App\Dog', 'follows', 'user_id', 'dog_id');
     }
 }

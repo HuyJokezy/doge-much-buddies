@@ -74,7 +74,11 @@
             </div>
         </nav>
 
+        <div class="container">
+            @include('layouts.messages')
+        </div>
         @yield('content')
+
     </div>
 
     <!-- Scripts -->

@@ -30,4 +30,13 @@ class Dog extends Model
     public function images(){
         return $this->hasMany('App\DogImage', 'dog_id', 'id');
     }
+
+    /**
+     * Get user's follow mapping
+     * 
+     * @return App\Follow
+     */
+    public function followedBy(){
+        return $this->belongsToMany('App\User', 'follows', 'dog_id', 'user_id');
+    }
 }

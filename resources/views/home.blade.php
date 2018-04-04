@@ -27,8 +27,7 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-        console.log('login page');
-        axios.get('/api/user')
+        axios.get('/api/user/dog/27/images')
         .then(response => {
             console.log(response.data);
         });

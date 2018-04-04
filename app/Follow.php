@@ -5,16 +5,33 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class PostReact extends Model
+class Follow extends Model
 {
     // Table name
-    protected $table = 'post_reacts';
+    protected $table = 'follows';
     // Primary key
-    protected $primaryKey = ['owner', 'post_id'];
-    // Incrementing
+    protected $primaryKey = ['user_id', 'dog_id'];
+    // No auto increment
     public $incrementing = false;
     // Timestamp
     public $timestamps = false;
+    
+    /**
+     * Get dog that tagged in the post
+     */
+    public function dog(){
+        return $this->belongsTo('App\Dog', 'id', 'dog_id');
+    }
+
+    /**
+     * Get post 
+     * 
+     * @return App\Post
+     */
+    public function user(){
+        return $this->belongsTo('App\User', 'id', 'user_id');
+    }
+
 
     /**
      * Set the keys for a save update query.
