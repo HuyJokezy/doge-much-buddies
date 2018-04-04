@@ -3,16 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostTag extends Model
 {
     // Table name
-    protected $table = 'posts';
+    protected $table = 'post_tags';
     // Primary key
     protected $primaryKey = ['post_id', 'dog_id'];
     public $incrementing = false;
     // Timestamp
-    public $timestamps = true;
+    public $timestamps = false;
     
     /**
      * Get dog that tagged in the post
