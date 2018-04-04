@@ -25,3 +25,12 @@
     </div>
 </div>
 @endsection
+@section('script')
+    <script type="text/javascript">
+        console.log('login page');
+        axios.get('/api/user')
+        .then(response => {
+            console.log(response.data);
+        });
+    </script>
+@endsection
