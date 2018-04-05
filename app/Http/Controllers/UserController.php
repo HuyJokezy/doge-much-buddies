@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index']]);
     }
 
     /**
@@ -57,9 +58,16 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
         $user = User::find($id);
-        return $user->toJson(); 
+        if ($id == Auth::user()->id) {
+            return $user;
+        } else {
+            unset($user->id);
+            unset($user->email);            
+            unset($user->phone);
+            unset($user->location);
+            return $user;
+        }
     }
 
     /**
@@ -68,10 +76,13 @@ class UserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function showDog($id)
+    public function myDog(Request $request, $id)
     {
+        if ($id != Auth::user()->id){
+            abort(403, "Unauthorized access.");
+        }
         $dogs = User::find($id)->dogs;
-        return $dogs->toJson();
+        return $dogs;
     }
 
     /**
@@ -82,7 +93,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        if ($id != Auth::user()->id){
+            abort(403, "Unauthorized access.");
+        }
+        return view('user.edit')->with('user', Auth::user());        
     }
 
     /**
@@ -94,7 +108,40 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($id != Auth::user()->id){
+            abort(403, "Unauthorized access.");
+        }
+        $this->validate($request, [
+            'name' => 'required|nullable|max:100',
+            'location' => 'nullable|max:100',
+            'phone' => 'nullable|max:100|regex:/^[0-9\-\+]{9,15}$/',
+            // 'profileimg' => 'image|nullable|max:1999',
+        ]);
+        
+        // Handle file upload
+        // if ($request->hasFile('profileimg')){
+        //    // Get filename with extension
+        //    $filenameWithExt = $request->file('profileimg')->getClientOriginalName();
+        //    // Get just filename
+        //    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        //    // Get just extension
+        //    $extension = $request->file('profileimg')->getClientOriginalExtension();
+        //    // Filename to store
+        //    $fileNameToStore = 'user_' . $id . '.' . $extension;
+        //    // Upload image
+        //    $path = $request->file('profileimg')->storeAs('public/profileimgs', $fileNameToStore);
+        // }
+
+
+        $user = User::find($id);
+        $user->name = null !== $request->input('name') ? $request->input('name') : $user->name;
+        $user->location = null !== $request->input('location') ? $request->input('location') : $user->location;
+        $user->phone = null !== $request->input('phone') ? $request->input('phone') : $user->phone;
+        // if ($request->hasFile('profileimg')){
+        //     $user->profile_image = $fileNameToStore;
+        // }
+        $user->save();
+        return redirect('/user/' . $id);
     }
 
     /**

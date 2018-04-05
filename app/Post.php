@@ -39,4 +39,13 @@ class Post extends Model
     public function reactedBy(){
         return $this->belongsToMany('App\User', 'post_reacts', 'post_id', 'owner')->withPivot('type');
     }
+
+    /**
+     * Get all dogs tagged on the post
+     * 
+     * @return App\User
+     */
+    public function taggedDogs(){
+        return $this->belongsToMany('App\Dog', 'post_tags', 'post_id', 'dog_id');
+    }
 }

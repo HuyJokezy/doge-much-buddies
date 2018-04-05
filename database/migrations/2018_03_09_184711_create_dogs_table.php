@@ -37,15 +37,6 @@ class CreateDogsTable extends Migration
 
             $table->foreign('owner')->references('id')->on('users')->onDelete('cascade');
         });
-
-        Schema::create('ownerfriendship', function (Blueprint $table) {
-            $table->integer('owner1')->unsigned();
-            $table->integer('owner2')->unsigned();
-            $table->timestamps();
-
-            $table->foreign('owner1')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('owner2')->references('id')->on('users')->onDelete('cascade');
-        });
     }
 
     /**
@@ -56,6 +47,5 @@ class CreateDogsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('dogs');
-        Schema::dropIfExists('ownerfriendship');
     }
 }

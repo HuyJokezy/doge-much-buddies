@@ -13,26 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::middleware('auth:api')->get('/user/dogs', function (Request $request) {
-    $user = $request->user();
-    return $user->dogs()->get();
-});
-Route::middleware('auth:api')->get('/user/follows', function (Request $request) {
-    $user = $request->user();
-    return $user->follows()->get();
-});
-Route::get('/post/{id}/post_react', function ($id) {
-    $post = App\Post::find($id);
-    return $post->reactedBy()->get();
-});
-Route::get('post/{id}/post_comments', function ($id) {
-    $post = App\Post::find($id);
-    return $post->comments()->get();
-});
-Route::middleware('auth:api')->get('/user/dog/{id}/images', function ($id) {
-    $dog = App\Dog::find($id);
-    return $dog->images()->get();
-});
+// Get all information of the current logged in user (except password, tokens)
+Route::middleware('auth:api')->get('/user', 'API\\APIController@getUser');
+
+// Get list of dogs of the current logged in user
+Route::middleware('auth:api')->get('/user/dogs', 'API\\APIController@getOwnerDogs');
+
+// Get list of dogs which the current logged in user follows
+Route::middleware('auth:api')->get('/user/follows', 'API\\APIController@getUserFollowDogs');
+
+// Get list of reaction of the post with post_id = {id}
+Route::get('/post/{id}/post_reacts', 'API\\APIController@getPostReactions');
+
+// Get lít of dogs are tagged on the post with post_id = {id}
+Route::get('/post/{id}/tags', 'API\\APIController@getDogsTaggedInPost');
+
+// Get list of comments of the post with post_id = {id}
+Route::get('post/{id}/post_comments', 'API\\APIController@getComment');
+
+// Get list of dog's images having dog_id = {id}
+// Only the owner and who follows that dog can get, else return 403
+Route::middleware('auth:api')->get('/dog/{id}/images', 'API\\APIController@getDogImages');

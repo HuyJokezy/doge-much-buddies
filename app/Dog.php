@@ -39,4 +39,13 @@ class Dog extends Model
     public function followedBy(){
         return $this->belongsToMany('App\User', 'follows', 'dog_id', 'user_id');
     }
+    
+    /**
+     * Get all posts that tag this dog
+     * 
+     * @return App\User
+     */
+    public function taggedIn(){
+        return $this->belongsToMany('App\Post', 'post_tags', 'dog_id', 'post_id');
+    }
 }
