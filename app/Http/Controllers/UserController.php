@@ -16,7 +16,8 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index']]);
+        // $this->middleware('auth', ['except' => ['index']]);
+        $this->middleware('auth');
     }
 
     /**
@@ -129,7 +130,7 @@ class UserController extends Controller
         //    // Filename to store
         //    $fileNameToStore = 'user_' . $id . '.' . $extension;
         //    // Upload image
-        //    $path = $request->file('profileimg')->storeAs('public/profileimgs', $fileNameToStore);
+        //    $path = $request->file('profileimg')->storeAs('public/user_profile/profileimgs', $fileNameToStore);
         // }
 
 

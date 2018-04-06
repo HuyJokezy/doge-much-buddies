@@ -75,6 +75,7 @@
         </nav>
 
         @yield('content')
+        @include('layouts.messages')
 
     </div>
 

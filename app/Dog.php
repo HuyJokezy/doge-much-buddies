@@ -18,7 +18,7 @@ class Dog extends Model
      * 
      * @return App\User
      */
-    public function user(){
+    public function getOwner(){
         return $this->belongsTo('App\User', 'id', 'owner');
     }
 

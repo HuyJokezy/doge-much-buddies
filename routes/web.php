@@ -22,4 +22,4 @@ Route::resource('user', 'UserController');
 Route::get('/user/{user}/myDog', 'UserController@myDog')->name('user.myDog');
 
 // All information and images of the Dog
-Route::get('/dog/{dog}', 'DogController@show')->name('dog.show');
+Route::resource('dog', 'DogController');
