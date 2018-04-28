@@ -16,8 +16,9 @@ class CreatePostReactsTable extends Migration
         Schema::create('post_reacts', function (Blueprint $table) {
             $table->integer('owner')->unsigned();
             $table->integer('post_id')->unsigned();
-
             $table->enum('type', ['Like', 'Love', 'Laugh']);
+
+            $table->primary(['owner', 'post_id']);
 
             $table->foreign('owner')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

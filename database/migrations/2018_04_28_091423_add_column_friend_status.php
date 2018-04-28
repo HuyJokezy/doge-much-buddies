@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUserColumn extends Migration
+class AddColumnFriendStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateUserColumn extends Migration
      */
     public function up()
     {
-        Schema::table('users', function(Blueprint $table) {
-            $table->string('profile_image')->nullable();
+        Schema::table('friends', function (Blueprint $table) {
+            $table->enum('status', ['friend', 'pending']);
         });
     }
 
@@ -25,8 +25,8 @@ class UpdateUserColumn extends Migration
      */
     public function down()
     {
-        Schema::table('users', function(Blueprint $table) {
-            $table->dropColumn('profile_image');
+        Schema::table('friends', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 }

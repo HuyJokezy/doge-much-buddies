@@ -121,7 +121,7 @@ class DogController extends Controller
                 return $result;
             }
         }
-        $dog = \App\Dog::find($id);
+        $dog = Dog::find($id);
         $followed_users = $dog->followedBy()->get();
         foreach ($followed_users as $one){
             if ($one->id == $user->id){
@@ -215,7 +215,7 @@ class DogController extends Controller
         if ($this->checkAccess($user, $id) == false){
             abort(403, "Unauthorized access.");
         }
-        $dog = find($id);
+        $dog = Dog::find($id);
 
         if ($dog->profile_image != 'dogs/noimage.jpg'){
             Storage::delete('public/' . $dog->profile_image);

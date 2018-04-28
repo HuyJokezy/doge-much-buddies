@@ -30,7 +30,7 @@ class APIController extends Controller
         return $post->reactedBy()->get();
     }
 
-    // Get lít of dogs are tagged on the post with post_id = {id}
+    // Get listt of dogs are tagged on the post with post_id = {id}
     public function getDogsTaggedInPost($post_id) {
         $post = \App\Post::find($post_id);
         return $post->taggedDogs()->get();
@@ -60,5 +60,26 @@ class APIController extends Controller
             }
         }
         abort(403, "Unauthorized action.");
+    }
+
+    // Get list of tagable dogs
+    public function getTaggableDogs(Request $request) {
+        $user = $request->user();
+        $friends = $user->friends()->where('status', '=', 'friend')->get();
+        $theFriends = $user->theFriends()->where('status', '=', 'friend')->get();
+        $dogs = [];
+        foreach ($friends as $friend){
+            $friend_dogs = $friend->dogs()->get();
+            foreach ($friend_dogs as $dog){
+                $dogs[] = $dog;
+            }
+        }
+        foreach ($theFriends as $theFriend){
+            $friend_dogs = $friend->dogs()->get();
+            foreach ($friend_dogs as $dog){
+                $dogs[] = $dog;
+            }
+        }
+        return $dogs;
     }
 }

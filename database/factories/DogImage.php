@@ -19,7 +19,7 @@ $factory->define(App\DogImage::class, function (Faker $faker) {
         'Shiba']);
     $profile_pic = "dogs/$breed.jpg";        
     return [
-        'dog_id' => $faker->numberBetween(25, 44),
+        'dog_id' => $faker->numberBetween(1, 20),
         'image' => $profile_pic,
     ];
 });

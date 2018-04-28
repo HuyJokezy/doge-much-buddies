@@ -4,7 +4,7 @@
 
 <div class="container">
     <form action="{{route('user.update', $user->id)}}" method="POST" 
-        {{-- enctype="multipart/form-data" --}}
+        enctype="multipart/form-data"
         >
         <div class="form-group">
             <label for="name">Name</label>

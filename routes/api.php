@@ -25,7 +25,7 @@ Route::middleware('auth:api')->get('/user/follows', 'API\\APIController@getUserF
 // Get list of reaction of the post with post_id = {id}
 Route::get('/post/{id}/post_reacts', 'API\\APIController@getPostReactions');
 
-// Get lít of dogs are tagged on the post with post_id = {id}
+// Get list of dogs are tagged on the post with post_id = {id}
 Route::get('/post/{id}/tags', 'API\\APIController@getDogsTaggedInPost');
 
 // Get list of comments of the post with post_id = {id}
@@ -34,3 +34,6 @@ Route::get('post/{id}/post_comments', 'API\\APIController@getComment');
 // Get list of dog's images having dog_id = {id}
 // Only the owner and who follows that dog can get, else return 403
 Route::middleware('auth:api')->get('/dog/{id}/images', 'API\\APIController@getDogImages');
+
+// Get list of taggable dogs
+Route::middleware('auth:api')->get('taggableDogs', 'API\\APIController@getTaggableDogs');

@@ -20,6 +20,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('user', 'UserController');
 Route::get('/user/{user}/myDog', 'UserController@myDog')->name('user.myDog');
+Route::get('/user/{user}/myFriend', 'UserController@myFriend')->name('user.myFriend');
 
-// All information and images of the Dog
+// Dog route
 Route::resource('dog', 'DogController');
+
+// Post route
+Route::resource('post', 'PostController');
+
+// PostReact route
+
+Route::match(['put', 'patch'], '/postReact/{postReact}', 'PostReactController@update')->name('postReact.update');
+Route::post('/postReact', 'PostReactController@store')->name('postReact.store');
+Route::delete('/postReact/{postReact}', 'PostReactController@destroy')->name('postReact.destroy');

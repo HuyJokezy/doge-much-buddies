@@ -72,9 +72,10 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get user's dogs
      * 
      * @param int $id
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function myDog(Request $request, $id)
@@ -84,6 +85,30 @@ class UserController extends Controller
         }
         $dogs = User::find($id)->dogs;
         return $dogs;
+    }
+
+    /**
+     * Get user's friends
+     * 
+     * @param 
+     * @return
+     */
+    public function myFriend(Request $request, $id)
+    {
+        if ($id != Auth::user()->id){
+            abort(403, "Unauthorized access.");
+        }
+        $user = User::find($id);
+        $list = [];
+        $friends = $user->friends()->where('status', '=', 'friend')->get();
+        foreach ($friends as $friend){
+            $list[] = $friend;
+        }
+        $theFriends = $user->theFriends()->where('status', '=', 'friend')->get();
+        foreach ($theFriends as $theFriend){
+            $list[] = $theFriend;
+        }
+        return $list;
     }
 
     /**
@@ -116,31 +141,31 @@ class UserController extends Controller
             'name' => 'required|nullable|max:100',
             'location' => 'nullable|max:100',
             'phone' => 'nullable|max:100|regex:/^[0-9\-\+]{9,15}$/',
-            // 'profileimg' => 'image|nullable|max:1999',
+            'profileimg' => 'image|nullable|max:1999',
         ]);
         
         // Handle file upload
-        // if ($request->hasFile('profileimg')){
-        //    // Get filename with extension
-        //    $filenameWithExt = $request->file('profileimg')->getClientOriginalName();
-        //    // Get just filename
-        //    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        //    // Get just extension
-        //    $extension = $request->file('profileimg')->getClientOriginalExtension();
-        //    // Filename to store
-        //    $fileNameToStore = 'user_' . $id . '.' . $extension;
-        //    // Upload image
-        //    $path = $request->file('profileimg')->storeAs('public/user_profile/profileimgs', $fileNameToStore);
-        // }
+        if ($request->hasFile('profileimg')){
+           // Get filename with extension
+           $filenameWithExt = $request->file('profileimg')->getClientOriginalName();
+           // Get just filename
+           $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+           // Get just extension
+           $extension = $request->file('profileimg')->getClientOriginalExtension();
+           // Filename to store
+           $fileNameToStore = 'user_' . $id . '.' . $extension;
+           // Upload image
+           $path = $request->file('profileimg')->storeAs('public/user_profile/profileimgs', $fileNameToStore);
+        }
 
 
         $user = User::find($id);
         $user->name = null !== $request->input('name') ? $request->input('name') : $user->name;
         $user->location = null !== $request->input('location') ? $request->input('location') : $user->location;
         $user->phone = null !== $request->input('phone') ? $request->input('phone') : $user->phone;
-        // if ($request->hasFile('profileimg')){
-        //     $user->profile_image = $fileNameToStore;
-        // }
+        if ($request->hasFile('profileimg')){
+            $user->profile_image = $fileNameToStore;
+        }
         $user->save();
         return redirect('/user/' . $id);
     }

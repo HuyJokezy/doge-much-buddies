@@ -17,6 +17,8 @@ class CreateFollowsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('dog_id')->unsigned();
 
+            $table->primary(['user_id', 'dog_id']);
+            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('dog_id')->references('id')->on('dogs')->onDelete('cascade');
         });
