@@ -32,12 +32,16 @@ class HomeController extends Controller
             $user->api_token = $accessToken;
             $user->save();
         }
+
         // return view('home');
         //user's wall can get posts of all friend, and post with following dog tagged
-        // $posts = $user->posts()->get();
-        // return $posts;
         $dogs = $user->follows()->get();
         $posts = [];
+
+        $user_posts = $user->posts()->get();
+        foreach ($user_posts as $post) {
+            $posts[] = $post;
+        }
         foreach ($dogs as $dog) {
             $rows = DB::select('select posts.* 
                                 from posts,post_tags   
@@ -47,6 +51,7 @@ class HomeController extends Controller
                 $posts[] = $row;
             }
         }
+        $posts = array_unique($posts, SORT_REGULAR);
         return $posts;
     }
 }

@@ -29,7 +29,11 @@ Route::resource('dog', 'DogController');
 Route::resource('post', 'PostController');
 
 // PostReact route
+Route::match(['put', 'patch'], '/post/{id}/post_reacts', 'PostReactController@update')->name('postReact.update');
+Route::post('/post/{id}/post_reacts', 'PostReactController@store')->name('postReact.store');
+Route::delete('/post/{id}/post_reacts', 'PostReactController@destroy')->name('postReact.destroy');
 
-Route::match(['put', 'patch'], '/postReact/{postReact}', 'PostReactController@update')->name('postReact.update');
-Route::post('/postReact', 'PostReactController@store')->name('postReact.store');
-Route::delete('/postReact/{postReact}', 'PostReactController@destroy')->name('postReact.destroy');
+// PostComment route
+Route::match(['put', 'patch'], '/post/{id}/post_comments/{cmtid}', 'PostCommentController@update')->name('postComment.update');
+Route::post('/post/{id}/post_comments', 'PostCommentController@store')->name('postComment.store');
+Route::delete('/post/{id}/post_comments/{cmtid}', 'PostCommentController@destroy')->name('postComment.destroy');
