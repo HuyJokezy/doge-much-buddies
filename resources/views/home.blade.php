@@ -106,5 +106,19 @@
         // .then(response => {
         //     console.log(response.data);
         // });
+
+        // Test add friend (notice target id)
+        // axios.post('user/1/addFriend')
+        // .then(response => {
+        //     console.log(response.data);
+        // });
+
+        // Test reponse friend request (notice target id) response = {deny, acccept}
+        // axios.post('friend/response/3', {
+        //     response: 'deny'
+        // })
+        // .then(response => {
+        //     console.log(response.data);
+        // });
     </script>
 @endsection

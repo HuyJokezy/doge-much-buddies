@@ -51,6 +51,35 @@ class UserController extends Controller
         //
     }
 
+    private function relationship (User $user, User $target) {
+        $user_friends = $user->friends()->where('status', '=', 'friend')->get();
+        foreach ($user_friends as $friend){
+            if ($friend->id == $target->id) {
+                return 'friend';
+            }
+        }
+        $user_friends = $user->friends()->where('status', '=', 'pending')->get();
+        foreach ($user_friends as $friend){
+            if ($friend->id == $target->id) {
+                return 'pending';
+            }
+        }
+        $user_friends = $user->theFriends()->where('status', '=', 'friend')->get();
+        foreach ($user_friends as $friend){
+            if ($friend->id == $target->id) {
+                return 'friend';
+            }
+        }
+        $user_friends = $user->theFriends()->where('status', '=', 'pending')->get();
+        foreach ($user_friends as $friend){
+            if ($friend->id == $target->id) {
+                return 'pending';
+            }
+        }
+
+        return 'stranger';
+    }
+
     /**
      * Display the specified resource.
      *
@@ -63,10 +92,12 @@ class UserController extends Controller
         if ($id == Auth::user()->id) {
             return $user;
         } else {
-            unset($user->id);
+            // unset($user->id);
             unset($user->email);            
             unset($user->phone);
             unset($user->location);
+            
+            $user['relationship'] = $this->relationship (Auth::user(), $user);
             return $user;
         }
     }

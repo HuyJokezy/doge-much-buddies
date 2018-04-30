@@ -37,3 +37,8 @@ Route::delete('/post/{id}/post_reacts', 'PostReactController@destroy')->name('po
 Route::match(['put', 'patch'], '/post/{id}/post_comments/{cmtid}', 'PostCommentController@update')->name('postComment.update');
 Route::post('/post/{id}/post_comments', 'PostCommentController@store')->name('postComment.store');
 Route::delete('/post/{id}/post_comments/{cmtid}', 'PostCommentController@destroy')->name('postComment.destroy');
+
+// Friend route
+Route::get('/friend/requests', 'FriendController@requests')->name('friend.requests');
+Route::post('/user/{target}/addFriend', 'FriendController@addFriend')->name('user.addFriend');
+Route::post('/friend/response/{target}', 'FriendController@response')->name('friend.response');
