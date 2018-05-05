@@ -160,6 +160,7 @@ class DogController extends Controller
      */
     public function update(Request $request, $id)
     {
+        print_r('get here');
         $user = $request->user();
         
         if ($this->checkAccess($user, $id) == false) {
@@ -200,7 +201,9 @@ class DogController extends Controller
         }
 
         $dog->save();
-        return redirect('/dog/' . $id);
+        return redirect('home');
+        // return redirect()->route('user.myDog', ['id'=>Auth::user()->id]);
+        // return redirect('/dog/' . $id);
     }
 
     /**

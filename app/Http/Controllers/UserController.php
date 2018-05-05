@@ -90,6 +90,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($id == Auth::user()->id) {
+            // return view('user.edit', ['user' => $user]);
             return $user;
         } else {
             // unset($user->id);
@@ -115,7 +116,8 @@ class UserController extends Controller
             abort(403, "Unauthorized access.");
         }
         $dogs = User::find($id)->dogs;
-        return $dogs;
+        return view('user.dog')->with('dogs', $dogs);
+        // return $dogs;
     }
 
     /**
@@ -149,8 +151,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
+        if (!isset($status)) $status = false;
         if ($id != Auth::user()->id){
+            return redirect()->route('user.edit', ['id'=>Auth::user()->id]);
             abort(403, "Unauthorized access.");
         }
         return view('user.edit')->with('user', Auth::user());        
@@ -198,7 +202,10 @@ class UserController extends Controller
             $user->profile_image = $fileNameToStore;
         }
         $user->save();
-        return redirect('/user/' . $id);
+        return redirect()->route('user.edit', [
+            'id'=>Auth::user()->id
+        ]);
+        // return redirect('/user/' . $id);
     }
 
     /**

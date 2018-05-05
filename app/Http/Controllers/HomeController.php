@@ -52,6 +52,7 @@ class HomeController extends Controller
             }
         }
         $posts = array_unique($posts, SORT_REGULAR);
-        return $posts;
+        // print_r($posts);
+        return view('home', ['posts' => json_encode($posts)]);
     }
 }
