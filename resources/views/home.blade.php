@@ -2,24 +2,40 @@
 
 @section('content')
 <div class="container">
+    <br><br>
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-        <div class="card card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        <div class="col-10">
+            @foreach ($posts as $index=>$post)
+                <div class="card card-body" id="post{{ $post->id }}">
+                    <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
+                    <div class="dropdown-divider"></div>
+                    <p>{{ $post->content }}</p>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                        <div class="col-1"><i class="far fa-smile"></i> {{ $post->laughCount }}</div>
+                        <div class="col-1"><i class="far fa-thumbs-up"></i> {{ $post->likeCount }}</div>
+                        <div class="col-1"><i class="far fa-heart"></i> {{ $post->loveCount }}</div>
+                    </div>
+                </div>
+                <br>
+            @endforeach           
         </div>
-        <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
   </div>
-  <div class="card card-body">
-    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-  </div>
-        </div>
-    </div>
 </div>
 @endsection
 @section('script')
     <script type="text/javascript">
-        let a = '{!! $posts !!}';
+        $('i').mouseover(function(){
+            $(this).removeClass('far').addClass('fas');
+        }).mouseout(function(){
+            $(this).removeClass('fas').addClass('far');       
+        });
+        
+        $('i').hover(function() {
+            $(this).css('cursor','pointer');
+        }, function() {
+            $(this).css('cursor','auto');
+        });
         // axios.get('/api/dog/37/images')
         // .then(response => {
         //     console.log(response.data);

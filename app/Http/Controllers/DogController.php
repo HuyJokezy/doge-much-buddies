@@ -201,8 +201,8 @@ class DogController extends Controller
         }
 
         $dog->save();
-        return redirect('home');
-        // return redirect()->route('user.myDog', ['id'=>Auth::user()->id]);
+        // return redirect('home');
+        return redirect()->route('user.myDog', ['id'=>Auth::user()->id]);
         // return redirect('/dog/' . $id);
     }
 

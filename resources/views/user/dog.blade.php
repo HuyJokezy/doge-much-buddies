@@ -111,6 +111,8 @@
                 </select>
               </div>
             </div>
+            {{ csrf_field() }}
+            {{ method_field('PUT') }}
             <button style="display: none;" id="dogSubmit{{ $index }}" type="submit"></button>          
           </form>
         </div>

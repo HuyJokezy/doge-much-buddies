@@ -51,8 +51,30 @@ class HomeController extends Controller
                 $posts[] = $row;
             }
         }
+        foreach ($posts as $index=>$post) {
+            $postOwner = DB::select('select users.* 
+                                from users
+                                where users.id=' . $post->owner);
+            $postReacts = DB::select('select post_reacts.* 
+                                from post_reacts   
+                                where post_reacts.post_id=' . $post->id);
+            $postComments = DB::select('select post_comments.* 
+                                from post_comments   
+                                where post_comments.post_id=' . $post->id);
+            $posts[$index]->owner = $postOwner[0];
+            $posts[$index]->reactions = $postReacts;
+            $posts[$index]->comments = $postComments;
+            $posts[$index]->laughCount = 0;
+            $posts[$index]->likeCount = 0;
+            $posts[$index]->loveCount = 0;
+            foreach ($postReacts as $react) {
+                if ($react->type == 'Laugh') $posts[$index]->laughCount += 1;
+                if ($react->type == 'Like') $posts[$index]->likeCount += 1;
+                if ($react->type == 'Love') $posts[$index]->loveCount += 1;
+            }
+        }
         $posts = array_unique($posts, SORT_REGULAR);
-        // print_r($posts);
-        return view('home', ['posts' => json_encode($posts)]);
+        // error_log($posts[0]->reactions[0]->type);
+        return view('home', ['posts' => $posts]);
     }
 }
