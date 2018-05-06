@@ -137,13 +137,66 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // $user = Auth::user();
+        $user = Auth::user();
         // if (!$this->checkAccess($user, $post)){
         //     abort(403, "Unauthorized access.");
         // }
+        //Get owner info
+            $postOwner = DB::select('select users.* 
+                                from users
+                                where users.id=' . $post->owner);
+            $post->owner = $postOwner[0];
+            // Get reactions info                    
+            $postReacts = DB::select('select post_reacts.* 
+                                from post_reacts   
+                                where post_reacts.post_id=' . $post->id);
+            $post->reactions = $postReacts;
+            $post->laughCount = 0;
+            $post->likeCount = 0;
+            $post->loveCount = 0;
+            $post->yourReaction = 'None';
+            foreach ($postReacts as $react) {
+                if ($react->type == 'Laugh') {
+                    $post->laughCount += 1;
+                    if ($react->owner === $user->id) $post->yourReaction = 'Laugh';
+                }
+                if ($react->type == 'Like') {
+                    $post->likeCount += 1;
+                    if ($react->owner === $user->id) $post->yourReaction = 'Like';
+                }
+                if ($react->type == 'Love') {
+                    $post->loveCount += 1;
+                    if ($react->owner === $user->id) $post->yourReaction = 'Love';
+                }
+            }
+            // Get comments info
+            $postComments = DB::select('select post_comments.* 
+                                from post_comments   
+                                where post_comments.post_id=' . $post->id);
+            foreach ($postComments as $indexComment => $comment) {
+                $ownersOfComment = DB::select('select users.* 
+                                from users
+                                where users.id=' . $comment->owner);
+                $postComments[$indexComment]->ownerObject = $ownersOfComment[0];          
+            }
+            $post->comments = $postComments;
+            // Get tags info
+            $postTags = DB::select('select post_tags.* 
+                                from post_tags   
+                                where post_tags.post_id=' . $post->id);
+            foreach ($postTags as $indexTag => $tag) {
+                $dogsTagged = DB::select('select dogs.* 
+                                from dogs
+                                where dogs.id=' . $tag->dog_id);
+                $postTags[$indexTag]->dog = $dogsTagged[0];          
+            }
+            $post->tags = $postTags;
 
         // Everyone can see the post if have link
-        return $post;
+        return view('post.view', [
+            'post'=>$post
+        ]);
+        // return $post;
     }
 
     /**

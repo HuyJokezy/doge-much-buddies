@@ -1,22 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <br><br>
-    <div class="row">
-        <div class="col-10">
-            <div class="card card-body">
-                <a href="{{ route('post.create') }}">+ New post</a>
-            </div>
-            @foreach ($posts as $index=>$post)
-                <div class="card card-body" id="post{{ $post->id }}">
+<div class="container"><br><br>
+  <div class="card card-body" id="post{{ $post->id }}">
                     <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
                     <div class="dropdown-divider"></div>
-                    @if (strlen($post->content) < 250)
-                        <p>{{ $post->content }}</p>
-                    @else
-                        <p>{{ substr($post->content, 0, 239) }}  <a href="/post/{{ $post->id }}">...see more</a></p>                        
-                    @endif
+                    <p>{{ $post->content }}</p>
                     <p>
                         <i class="fas fa-tags"></i>
                         @foreach ($post->tags as $tag)
@@ -40,15 +29,16 @@
                     </div>
                     <div class="dropdown-divider"></div>
                     <div class="card card-body">
-                        <a href="/post/{{ $post->id }}">+ Comment on post</a>
+                        <textarea class="form-control" id="content" rows="3"></textarea>
+                        <br>
+                        <div class="row">
+                          <div class="col-9"></div>
+                          <div class="col-3">
+                            <button class="btn btn-primary float-right">Comment</button>
+                          </div>
+                        </div>                        
                     </div>
                     @foreach ($post->comments as $indexComment=>$comment)
-                        @if ($indexComment > 2)
-                            <div class="card card-body">
-                                <a href="/post/{{ $post->id }}">...View more comments</p>
-                            </div>
-                            @break
-                        @endif
                         <div class="card card-body">
                             <p class="row">
                                 <strong class="col-6">{{ $comment->ownerObject->name }} </strong>
@@ -58,14 +48,12 @@
                         </div>
                     @endforeach
                 </div>
-                <br>
-            @endforeach           
-        </div>
-  </div>
 </div>
+                
 @endsection
+
 @section('script')
-    <script type="text/javascript">
+<script type="text/javascript">
         let yourPostReactions = {};
 
         $('i').mouseover(function(){
@@ -84,7 +72,7 @@
      
 
         (function () {
-            @foreach ($posts as $index=>$post)
+            
                 @if ($post->yourReaction == 'Laugh')
                     $('#laugh' + {{ $post->id }}).addClass('fas').removeClass('far');
                     yourPostReactions['{{ $post->id }}'] = 'Laugh';
@@ -97,12 +85,12 @@
                 @else
                     yourPostReactions['{{ $post->id }}'] = 'None';
                 @endif
-            @endforeach
+            
         })();
 
         function toggleReaction(id, type) {
             if (yourPostReactions[id.toString()] === type) {
-                axios.delete(`post/${ id }/post_reacts`, {})
+                axios.delete(`/post/${ id }/post_reacts`, {})
                 .then(response => {
                     $('#' + type.toLowerCase() + id).removeClass('fas').addClass('far');
                     yourPostReactions[id.toString()] = 'None';
@@ -110,7 +98,7 @@
                 let newCount = parseInt(document.getElementById(type.toLowerCase() + 'Count' + id).innerHTML) - 1;
                 document.getElementById(type.toLowerCase() + 'Count' + id).innerHTML = newCount;
             } else if (yourPostReactions[id.toString()] === 'None') {
-                axios.post(`post/${ id }/post_reacts`, {
+                axios.post(`/post/${ id }/post_reacts`, {
                     type: type
                 })
                 .then(response => {
@@ -120,7 +108,7 @@
                     document.getElementById(type.toLowerCase() + 'Count' + id).innerHTML = newCount;
                 })
             } else {
-                axios.put(`post/${ id }/post_reacts`, {
+                axios.put(`/post/${ id }/post_reacts`, {
                     type: type
                 })
                 .then(response => {
@@ -138,4 +126,7 @@
             }
         }
     </script>
+
 @endsection
+
+        
