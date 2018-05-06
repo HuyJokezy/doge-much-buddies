@@ -38,6 +38,10 @@
       <p><a href="#" onclick="openChangeDogInfoModal()" class="btn btn-success btn-block">Change Information</a></p>
       <p><a href="#" class="btn btn-primary btn-block">View Tagged Posts</a></p>
       <p><a href="#" class="btn btn-danger btn-block">Delete</a></p>
+      <br>
+      <p style="text-align: center;">or</p>
+      <br>
+      <p><a href="{{ route('dog.create') }}" class="btn btn-light btn-block">Bring in your new doggo <i class="fas fa-plus"></i></a></p>
   </div>
   </div>
   <br><br>

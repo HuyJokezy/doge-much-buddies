@@ -52,26 +52,56 @@ class HomeController extends Controller
             }
         }
         foreach ($posts as $index=>$post) {
+            //Get owner info
             $postOwner = DB::select('select users.* 
                                 from users
                                 where users.id=' . $post->owner);
+            $posts[$index]->owner = $postOwner[0];
+            // Get reactions info                    
             $postReacts = DB::select('select post_reacts.* 
                                 from post_reacts   
                                 where post_reacts.post_id=' . $post->id);
-            $postComments = DB::select('select post_comments.* 
-                                from post_comments   
-                                where post_comments.post_id=' . $post->id);
-            $posts[$index]->owner = $postOwner[0];
             $posts[$index]->reactions = $postReacts;
-            $posts[$index]->comments = $postComments;
             $posts[$index]->laughCount = 0;
             $posts[$index]->likeCount = 0;
             $posts[$index]->loveCount = 0;
+            $posts[$index]->yourReaction = 'None';
             foreach ($postReacts as $react) {
-                if ($react->type == 'Laugh') $posts[$index]->laughCount += 1;
-                if ($react->type == 'Like') $posts[$index]->likeCount += 1;
-                if ($react->type == 'Love') $posts[$index]->loveCount += 1;
+                if ($react->type == 'Laugh') {
+                    $posts[$index]->laughCount += 1;
+                    if ($react->owner === $user->id) $posts[$index]->yourReaction = 'Laugh';
+                }
+                if ($react->type == 'Like') {
+                    $posts[$index]->likeCount += 1;
+                    if ($react->owner === $user->id) $posts[$index]->yourReaction = 'Like';
+                }
+                if ($react->type == 'Love') {
+                    $posts[$index]->loveCount += 1;
+                    if ($react->owner === $user->id) $posts[$index]->yourReaction = 'Love';
+                }
             }
+            // Get comments info
+            $postComments = DB::select('select post_comments.* 
+                                from post_comments   
+                                where post_comments.post_id=' . $post->id);
+            foreach ($postComments as $indexComment => $comment) {
+                $ownersOfComment = DB::select('select users.* 
+                                from users
+                                where users.id=' . $comment->owner);
+                $postComments[$indexComment]->ownerObject = $ownersOfComment[0];          
+            }
+            $posts[$index]->comments = $postComments;
+            // Get tags info
+            $postTags = DB::select('select post_tags.* 
+                                from post_tags   
+                                where post_tags.post_id=' . $post->id);
+            foreach ($postTags as $indexTag => $tag) {
+                $dogsTagged = DB::select('select dogs.* 
+                                from dogs
+                                where dogs.id=' . $tag->dog_id);
+                $postTags[$indexTag]->dog = $dogsTagged[0];          
+            }
+            $posts[$index]->tags = $postTags;
         }
         $posts = array_unique($posts, SORT_REGULAR);
         // error_log($posts[0]->reactions[0]->type);
