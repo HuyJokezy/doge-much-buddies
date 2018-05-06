@@ -34,7 +34,7 @@
                         <div class="row">
                           <div class="col-9"></div>
                           <div class="col-3">
-                            <button class="btn btn-primary float-right">Comment</button>
+                            <button class="btn btn-primary float-right" onclick="comment()">Comment</button>
                           </div>
                         </div>                        
                     </div>
@@ -87,6 +87,13 @@
                 @endif
             
         })();
+
+        function comment () {
+          axios.post(`/post/{{ $post->id }}/post_comments`, {
+            comment: document.getElementById('content').value
+          })
+          .then(response => (response.status === 200) ? location.reload(true) : alert('Sorry there is a problem with the connection, please try again later'))
+        }
 
         function toggleReaction(id, type) {
             if (yourPostReactions[id.toString()] === type) {
