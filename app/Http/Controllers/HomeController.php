@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use App\Ultilities\ArraySorting;
 
 class HomeController extends Controller
 {
@@ -53,7 +54,7 @@ class HomeController extends Controller
         }
         foreach ($posts as $index=>$post) {
             //Get owner info
-            $postOwner = DB::select('select users.* 
+            $postOwner = DB::select('select users.id, users.name  
                                 from users
                                 where users.id=' . $post->owner);
             $posts[$index]->owner = $postOwner[0];
@@ -85,7 +86,7 @@ class HomeController extends Controller
                                 from post_comments   
                                 where post_comments.post_id=' . $post->id);
             foreach ($postComments as $indexComment => $comment) {
-                $ownersOfComment = DB::select('select users.* 
+                $ownersOfComment = DB::select('select users.id, users.name  
                                 from users
                                 where users.id=' . $comment->owner);
                 $postComments[$indexComment]->ownerObject = $ownersOfComment[0];          
@@ -104,7 +105,9 @@ class HomeController extends Controller
             $posts[$index]->tags = $postTags;
         }
         $posts = array_unique($posts, SORT_REGULAR);
-        // error_log($posts[0]->reactions[0]->type);
+
+        $sort = new ArraySorting();
+        $posts =  $sort->custom_sort($posts, 'newest');
         return view('home', ['posts' => $posts]);
     }
 }
