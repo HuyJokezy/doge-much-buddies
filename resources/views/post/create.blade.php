@@ -6,7 +6,7 @@
   <form>
     <div class="form-group">
       <label for="content"></label>
-      <textarea class="form-control" id="content" rows="4"></textarea>
+      <textarea class="form-control" id="content" rows="6"></textarea>
     </div>
     <div class="form-group card card-body">
       <div>Tags: 
@@ -21,8 +21,11 @@
       </div>
       <br>
       <p id="taggedDogsText"></p>
-    </div>   
+    </div>
   </form>
+  <div class="row">
+    <div class="col-3"><button class="btn btn-primary btn-block" onclick="post()">Post</button></div>     
+  </div> 
 </div>
 @endsection
 
@@ -55,8 +58,19 @@
       let text = document.getElementById('tick' + id).innerHTML.trim();
       document.getElementById('tick' + id).innerHTML = text.substr(0, 1) + 'X' + text.substr(2);
     }
-    let taggedDogsText = taggedDogs.map((taggedDog) => taggedDog.name).join(',');
+    let taggedDogsText = taggedDogs.map((taggedDog) => taggedDog.name).join(', ');
     document.getElementById('taggedDogsText').innerHTML = taggedDogsText;
+  }
+
+  function post() {
+    console.log(1);
+    let content = document.getElementById('content').value;
+    let tags = taggedDogs.map((taggedDog) => taggedDog.id);
+    axios.post('/post', {
+      content,
+      tags
+    })
+    .then(response => response.status === 200 ? window.location.href = '/home' : alert('Sorry there is some connection problem, please post again later'));
   }
 </script>
 @endsection
