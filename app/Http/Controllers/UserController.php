@@ -25,9 +25,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        if ($request->has('q')) error_log($request->input('q'));;
+        // $user = $request->input('q');
+        // error_log($user);
+        return User::all();
     }
 
     /**
@@ -61,7 +65,7 @@ class UserController extends Controller
         $user_friends = $user->friends()->where('status', '=', 'pending')->get();
         foreach ($user_friends as $friend){
             if ($friend->id == $target->id) {
-                return 'pending';
+                return 'requested';
             }
         }
         $user_friends = $user->theFriends()->where('status', '=', 'friend')->get();
@@ -91,9 +95,12 @@ class UserController extends Controller
         $user = User::find($id);
         if ($id == Auth::user()->id) {
             // return view('user.edit', ['user' => $user]);
-            return $user;
+            return redirect()->route('home');
         } else if ($this->relationship (Auth::user(), $user) == 'friend') {
             $user['relationship'] = 'friend';
+            return view('user.profile', [
+                'user'=>$user
+            ]);
             return $user;
         } else {
             // unset($user->id);
@@ -102,6 +109,9 @@ class UserController extends Controller
             unset($user->location);
             
             $user['relationship'] = $this->relationship (Auth::user(), $user);
+            return view('user.profile', [
+                'user'=>$user
+            ]);
             return $user;
         }
     }

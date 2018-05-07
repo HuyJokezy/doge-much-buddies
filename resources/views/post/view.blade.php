@@ -3,7 +3,11 @@
 @section('content')
 <div class="container"><br><br>
   <div class="card card-body" id="post{{ $post->id }}">
+                    @if ($post->isOwner)
                     <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
+                    @else
+                    <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
+                    @endif
                     <div class="dropdown-divider"></div>
                     <p>{{ $post->content }}</p>
                     <p>
@@ -28,6 +32,7 @@
                         </div>
                     </div>
                     <div class="dropdown-divider"></div>
+                    @if ($post->isOwner)
                     <div class="card card-body">
                         <textarea class="form-control" id="content" rows="3"></textarea>
                         <br>
@@ -38,10 +43,11 @@
                           </div>
                         </div>                        
                     </div>
+                    @endif
                     @foreach ($post->comments as $indexComment=>$comment)
                         <div class="card card-body">
                             <p class="row">
-                                <strong class="col-6">{{ $comment->ownerObject->name }} </strong>
+                                <strong class="col-6"><a href="/user/{{ $comment->ownerObject->id }}">{{ $comment->ownerObject->name }} </a></strong>
                                 <small class="col-6" style="text-align: right;">{{ $comment->created_at }}</small>
                             </p>
                             <p class="commentBox">{{ $comment->comment }}</p>

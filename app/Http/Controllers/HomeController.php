@@ -40,8 +40,20 @@ class HomeController extends Controller
         $posts = [];
 
         $user_posts = $user->posts()->get();
-        foreach ($user_posts as $post) {
-            $posts[] = $post;
+        // foreach ($user_posts as $post) {
+        //     $posts[] = $post;
+        // }
+        $friends = DB::select('select distinct users.* from users, 
+                                (SELECT * from friends where (friends.user_1='.$user->id.' or friends.user_2='.$user->id.') 
+                                and friends.status="friend") as f 
+                                where users.id = f.user_1 or users.id = f.user_1');
+        foreach ($friends as $friend) {
+            $rows = DB::select('select posts.* 
+                                from posts   
+                                where posts.owner=' . $friend->id);
+            foreach($rows as $row){
+                $posts[] = $row;
+            }
         }
         foreach ($dogs as $dog) {
             $rows = DB::select('select posts.* 

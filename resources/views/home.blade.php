@@ -10,7 +10,11 @@
             </div>
             @foreach ($posts as $index=>$post)
                 <div class="card card-body" id="post{{ $post->id }}">
+                    @if ($post->owner->id === \Auth::user()->id)
                     <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
+                    @else
+                    <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
+                    @endif
                     <div class="dropdown-divider"></div>
                     @if (strlen($post->content) < 250)
                         <p>{{ $post->content }}</p>
@@ -51,7 +55,11 @@
                         @endif
                         <div class="card card-body">
                             <p class="row">
+                                @if ($comment->ownerObject->id === $post->owner->id)
                                 <strong class="col-6">{{ $comment->ownerObject->name }} </strong>
+                                @else
+                                <a class="col-6" href="/user/{{ $comment->ownerObject->id }}"><strong>{{ $comment->ownerObject->name }} </strong></a>
+                                @endif
                                 <small class="col-6" style="text-align: right;">{{ $comment->created_at }}</small>
                             </p>
                             <p class="commentBox">{{ $comment->comment }}</p>

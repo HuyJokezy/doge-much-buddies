@@ -99,12 +99,17 @@ class FriendController extends Controller
                         ->where('user_1', '=', $target->id)
                         ->where('status', '=', 'pending')
                         ->first();
+        $friend2 = Friend::where('user_1', '=', $user->id)
+                        ->where('user_2', '=', $target->id)
+                        ->where('status', '=', 'pending')
+                        ->first();
         if ($request->input('response') == 'accept'){
             $friend->status = 'friend';
             $friend->save();
             return json_encode($result);
         } else {
-            $friend->delete();
+            if ($friend) $friend->delete();
+            if ($friend2) $friend2->delete();
             $result['status'] = 'denied';
             return json_encode($result);
         }

@@ -139,11 +139,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $user = Auth::user();
-        // if (!$this->checkAccess($user, $post)){
-        //     abort(403, "Unauthorized access.");
-        // }
-        //Get owner info
+            $user = Auth::user();
+            // if (!$this->checkAuth($user, $post)){
+            //     
+            // }
+            $post->isOwner = $this->checkAccess($user, $post);
+            //Get owner info
             $postOwner = DB::select('select users.* 
                                 from users
                                 where users.id=' . $post->owner);
@@ -194,11 +195,11 @@ class PostController extends Controller
             }
             $post->tags = $postTags;
 
-        // Everyone can see the post if have link
-        return view('post.view', [
-            'post'=>$post
-        ]);
-        // return $post;
+            // Everyone can see the post if have link
+            return view('post.view', [
+                'post'=>$post
+            ]);
+            // return $post;
     }
 
     /**
