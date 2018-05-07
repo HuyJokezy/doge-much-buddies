@@ -10,7 +10,7 @@
       <img src="{{ asset('storage/user_profile/profileimgs/' . $user->profile_image) }}" class="col-4"></img>
     @endif
     <div class="col-8">
-      <p>{{ $user->name }}</p>
+      <h5>{{ $user->name }}</h5>
       @if (isset($user->email) || $user->email != null)
         <p>{{ $user->email }}</p>
       @endif

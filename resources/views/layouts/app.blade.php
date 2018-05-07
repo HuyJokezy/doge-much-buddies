@@ -25,6 +25,22 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
+                        <a class="nav-link" href="#" onclick="toggleSearchBar('user')"><i class="fas fa-users"></i></a>  
+                        <li class="nav-item">
+                            <form id="searchUser" style="display:none" class="form-inline my-2 my-lg-0" action="/user">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search user" aria-label="Search" name="q">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="display:none">Search</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="toggleSearchBar('dog')"><i class="fab fa-github"></i></a>                           
+                        </li>
+                        <li class="nav-item">
+                            <form id="searchDog" style="display:none" class="form-inline my-2 my-lg-0" action="/dog">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search dog" aria-label="Search" name="q">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="display:none">Search</button>
+                            </form>
+                        </li>
                     </ul>
                     <ul class="navbar-nav navbar-right">
                         <!-- Authentication Links -->
@@ -147,6 +163,17 @@
                     document.getElementById(`reqCard${id}`).remove();
                 }
             });
+        }
+
+        function toggleSearchBar(type) {
+            if (type === 'user') {
+                document.getElementById('searchDog').style.display = 'none';
+                document.getElementById('searchUser').style.display = 'block';
+            }
+            else if (type === 'dog') {
+                document.getElementById('searchDog').style.display = 'block';
+                document.getElementById('searchUser').style.display = 'none';
+            }
         }
     </script>
     @yield('script')

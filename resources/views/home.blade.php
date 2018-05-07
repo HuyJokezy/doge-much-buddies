@@ -21,24 +21,26 @@
                     @else
                         <p>{{ substr($post->content, 0, 239) }}  <a href="/post/{{ $post->id }}">...see more</a></p>                        
                     @endif
+                    @if (!empty($post->tags))
                     <p>
                         <i class="fas fa-tags"></i>
                         @foreach ($post->tags as $tag)
                             <a href="#">{{ $tag->dog->name }}</a>,
                         @endforeach
                     </p>
+                    @endif
                     <div class="dropdown-divider"></div>
                     <div class="row">
                         <div class="col-1 reactionIcon">
-                            <i id="laugh{{ $post->id }}" class="far fa-smile" onclick="toggleReaction({{ $post->id }}, 'Laugh')"></i>
+                            <i id="laugh{{ $post->id }}" class="far fa-smile reactionI" onclick="toggleReaction({{ $post->id }}, 'Laugh')"></i>
                             <span id="laughCount{{ $post->id }}" class="reactionInfo"> {{ $post->laughCount }}</span>
                         </div>
                         <div class="col-1 reactionIcon">
-                            <i id="like{{ $post->id }}" class="far fa-thumbs-up" onclick="toggleReaction({{ $post->id }}, 'Like')"></i>
+                            <i id="like{{ $post->id }}" class="far fa-thumbs-up reactionI" onclick="toggleReaction({{ $post->id }}, 'Like')"></i>
                             <span id="likeCount{{ $post->id }}" class="reactionInfo"> {{ $post->likeCount }}</span>
                         </div>
                         <div class="col-1 reactionIcon">
-                            <i id="love{{ $post->id }}" class="far fa-heart" onclick="toggleReaction({{ $post->id }}, 'Love')"></i>
+                            <i id="love{{ $post->id }}" class="far fa-heart reactionI" onclick="toggleReaction({{ $post->id }}, 'Love')"></i>
                             <span id="loveCount{{ $post->id }}" class="reactionInfo"> {{ $post->loveCount }}</span>
                         </div>
                     </div>
@@ -76,7 +78,7 @@
     <script type="text/javascript">
         let yourPostReactions = {};
 
-        $('i').mouseover(function(){
+        $('.reactionI').mouseover(function(){
             $(this).removeClass('far').addClass('fas');
         }).mouseout(function(){
             let postId = $(this).attr('id').replace(/\D/g,'');

@@ -41,8 +41,18 @@ class DogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {   
+        if ($request->has('q')) {
+            $dogs = DB::select('select dogs.* 
+                    from dogs   
+                    where dogs.name like \'%'. $request->input('q') . '%\'');
+            return view('dog.list', [
+                'dogs'=>$dogs
+            ]);
+            // return $dogs;
+        };
+        
         return Dog::all();
     }
 
@@ -118,7 +128,10 @@ class DogController extends Controller
                     'information' => $one,
                     'images' => $one->images()->get(),
                 );
-                return $result;
+                return view('dog.profile',[
+                    "dog"=>$result
+                ]);
+                // return $result;
             }
         }
         $dog = Dog::find($id);
@@ -129,10 +142,17 @@ class DogController extends Controller
                     'information' => $dog,
                     'images' => $dog->images()->get(),
                 );
-                return $result;
+                return view('dog.profile',[
+                    "dog"=>$result
+                ]);
+                // return $result;
             }
         }
-        abort(403, "Unauthorized action.");
+        return view('dog.profile',[
+                    "dog"=>$dog
+                ]);
+        // return $dog;
+        // abort(403, "Unauthorized action.");
     }
 
     /**

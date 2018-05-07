@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -28,9 +29,15 @@ class UserController extends Controller
     public function index(Request $request)
     {
         //
-        if ($request->has('q')) error_log($request->input('q'));;
-        // $user = $request->input('q');
-        // error_log($user);
+        if ($request->has('q')) {
+            $users = DB::select('select users.* 
+                    from users   
+                    where users.name like \'%'. $request->input('q') . '%\'');
+            return view('user.list', [
+                'users'=>$users
+            ]);
+            // return $users;
+        };
         return User::all();
     }
 
