@@ -68,6 +68,7 @@ class APIController extends Controller
         $friends = $user->friends()->where('status', '=', 'friend')->get();
         $theFriends = $user->theFriends()->where('status', '=', 'friend')->get();
         $dogs = [];
+
         foreach ($friends as $friend){
             $friend_dogs = $friend->dogs()->get();
             foreach ($friend_dogs as $dog){
@@ -79,6 +80,10 @@ class APIController extends Controller
             foreach ($friend_dogs as $dog){
                 $dogs[] = $dog;
             }
+        }
+        $user_dogs = $user->dogs()->get();
+        foreach ($user_dogs as $dog){
+            $dogs[] = $dog;
         }
         return $dogs;
     }
