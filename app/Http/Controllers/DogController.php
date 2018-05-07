@@ -124,12 +124,13 @@ class DogController extends Controller
         $dogs = $user->dogs()->get();
         foreach ($dogs as $one){
             if ($one->id == $id){
-                $result = array(
-                    'information' => $one,
-                    'images' => $one->images()->get(),
-                );
+                // $result = array(
+                //     'information' => $one,
+                //     'images' => $one->images()->get(),
+                // );
                 return view('dog.profile',[
-                    "dog"=>$result
+                    // "dog"=>$result
+                    "dog" => $one
                 ]);
                 // return $result;
             }
@@ -138,12 +139,13 @@ class DogController extends Controller
         $followed_users = $dog->followedBy()->get();
         foreach ($followed_users as $one){
             if ($one->id == $user->id){
-                $result = array(
-                    'information' => $dog,
-                    'images' => $dog->images()->get(),
-                );
+                // $result = array(
+                //     'information' => $dog,
+                //     'images' => $dog->images()->get(),
+                // );
                 return view('dog.profile',[
-                    "dog"=>$result
+                    // "dog"=>$result
+                    "dog" => $dog
                 ]);
                 // return $result;
             }
