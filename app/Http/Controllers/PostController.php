@@ -40,6 +40,7 @@ class PostController extends Controller
     public function create(Request $request)
     {
         $user = \Auth::user();
+
         $followedDogs = DB::select('select dogs.* 
                                 from dogs
                                 where dogs.owner=' . $user->id);

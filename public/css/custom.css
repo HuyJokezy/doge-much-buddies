@@ -14,3 +14,13 @@
 .reactionInfo:hover {
   cursor: pointer;
 }
+
+.profileImage {
+  /* width: 50%; */
+  height: 100%;
+}
+
+.imgProfile {
+  width: 100px;
+  height: 100px;
+}

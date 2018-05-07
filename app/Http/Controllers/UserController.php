@@ -92,6 +92,9 @@ class UserController extends Controller
         if ($id == Auth::user()->id) {
             // return view('user.edit', ['user' => $user]);
             return $user;
+        } else if ($this->relationship (Auth::user(), $user) == 'friend') {
+            $user['relationship'] = 'friend';
+            return $user;
         } else {
             // unset($user->id);
             unset($user->email);            
@@ -141,7 +144,10 @@ class UserController extends Controller
         foreach ($theFriends as $theFriend){
             $list[] = $theFriend;
         }
-        return $list;
+        // return $list;
+        return view('user.friend', [
+            'friends'=>$list
+        ]);
     }
 
     /**

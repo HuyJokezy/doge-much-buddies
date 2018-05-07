@@ -54,6 +54,15 @@
                 Phone must start with/without + and contains only 9 to 15 numerical characters.
             </small>
         </div>
+        <div class="form-group">
+            <label for="profileimg">Send us your smiley face, bud</label>
+            <input type="file" class="form-control-file" id="profileimg" name="profileimg">
+            @if ($errors->has('profileimg'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('profileimg') }}</strong>
+                </span>
+            @endif
+        </div>
         {{ csrf_field() }}
         {{ method_field('PUT') }}
         <button type="submit" class="btn btn-primary">Change Information</button>

@@ -45,7 +45,7 @@
                     @foreach ($post->comments as $indexComment=>$comment)
                         @if ($indexComment > 2)
                             <div class="card card-body">
-                                <a href="/post/{{ $post->id }}">...View more comments</p>
+                                <a href="/post/{{ $post->id }}">...View more comments</a>
                             </div>
                             @break
                         @endif
