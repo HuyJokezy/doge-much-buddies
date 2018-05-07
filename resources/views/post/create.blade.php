@@ -22,6 +22,15 @@
       <br>
       <p id="taggedDogsText"></p>
     </div>
+    <div class="form-group">
+      <label for="postimg">Send us your smiley face, bud</label>
+      <input type="file" class="form-control-file" id="postimg" name="postimg">
+      @if ($errors->has('postimg'))
+          <span class="help-block">
+              <strong>{{ $errors->first('postimg') }}</strong>
+          </span>
+      @endif
+    </div>
   </form>
   <div class="row">
     <div class="col-3"><button class="btn btn-primary btn-block" onclick="post()">Post</button></div>     
@@ -66,10 +75,17 @@
     console.log(1);
     let content = document.getElementById('content').value;
     let tags = taggedDogs.map((taggedDog) => taggedDog.id);
-    axios.post('/post', {
-      content,
-      tags
-    })
+    let postimg = document.getElementById('postimg').files[0];
+    let data = new FormData();
+    data.append('content', content);
+    data.append('tags', JSON.stringify(tags));
+    data.append('postimg', postimg);
+    console.log(postimg);
+    const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+    }
+
+    axios.post('/post', data, config)
     .then(response => response.status === 200 ? window.location.href = '/home' : alert('Sorry there is some connection problem, please post again later'));
   }
 </script>

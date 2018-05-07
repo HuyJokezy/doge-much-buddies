@@ -90,7 +90,8 @@ class PostController extends Controller
         $post->save();
         
         if ($request->input('tags')){
-            foreach ($request->input('tags') as $dog_id) {
+            $tags = json_decode($request->input('tags'));
+            foreach ($tags as $dog_id) {
                 $postTag = new PostTag;
                 $postTag->post_id = $id;
                 $postTag->dog_id = $dog_id;
