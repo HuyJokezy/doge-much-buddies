@@ -268,7 +268,10 @@ class PostController extends Controller
         }
 
         $post->save();
-        return redirect('/post/' . $id);
+        $result = array (
+            'status' => 'success',
+        );
+        return $result;
     }
 
     /**

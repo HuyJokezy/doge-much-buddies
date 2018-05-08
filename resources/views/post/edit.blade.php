@@ -8,7 +8,7 @@
       <label for="content"></label>
       <textarea class="form-control" id="content" rows="6">{{ $post->content }}</textarea>
     </div>
-    <div class="form-group card card-body">
+    <!-- <div class="form-group card card-body">
       <div>Tags: 
         <select name="" id="" onchange="tagDog(this.value)">
             <option value="" selected>Choose a dog</option>
@@ -21,7 +21,7 @@
       </div>
       <br>
       <p id="taggedDogsText"></p>
-    </div>
+    </div> -->
     <div class="form-group">
       <label for="postimg">Send us your smiley face, bud</label>
       <input type="file" class="form-control-file" id="postimg" name="postimg">
@@ -78,21 +78,21 @@
     if (document.getElementById('postimg').files.length != 0){
       let postimg = document.getElementById('postimg').files[0];
       data.append('content', content);
-      data.append('tags', JSON.stringify(tags));
+      // data.append('tags', JSON.stringify(tags));
       data.append('postimg', postimg);
       console.log(postimg);
     }
     else {
       data.append('content', content);
-      data.append('tags', JSON.stringify(tags));
+      // data.append('tags', JSON.stringify(tags));
     }
     
     const config = {
         headers: { 'content-type': 'multipart/form-data' }
     }
 
-    axios.put('/post', data, config)
-    .then(response => response.status === 200 ? window.location.href = '/home' : alert('Sorry there is some connection problem, please post again later'));
+    axios.put('/post/{{ $post->id }}', data, config)
+    .then(response => response.status === 200 ? window.location.href = '/post/{{ $post->id }}' : alert('Sorry there is some connection problem, please post again later'));
   }
 </script>
 @endsection
