@@ -241,31 +241,13 @@ class PostController extends Controller
         }
 
         $this->validate($request, [
-            'content' => 'nullable|max:100',
+            'content' => 'required|nullable|max:100',
             'postimg' => 'image|nullable|max:1999',
         ]);
 
-        // Handle file upload
-        if ($request->hasFile('postimg')){
-           // Get filename with extension
-           $filenameWithExt = $request->file('postimg')->getClientOriginalName();
-           // Get just filename
-           $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-           // Get just extension
-           $extension = $request->file('postimg')->getClientOriginalExtension();
-           // Filename to store
-           $fileNameToStore = 'post_' . $post->id . '_user_' . $user->id . '.' . $extension;
-           // Upload image
-           $path = $request->file('postimg')->storeAs('public/posts/', $fileNameToStore);
-        } else {
-            $fileNameToStore = '';
-        }
-
         // $post = Post::find($post);
+        error_log($request->input('content'));
         $post->content = null !== $request->input('content') ? $request->input('content') : $post->content;
-        if ($request->hasFile('postimg')){
-            $post->image = 'posts/' . $fileNameToStore;
-        }
 
         $post->save();
         $result = array (
