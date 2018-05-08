@@ -9,6 +9,10 @@
                     <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
                     @endif
                     <div class="dropdown-divider"></div>
+                    @if ($post->image)
+                    <img class="d-block w-100" src="{{ asset('storage/'. $post->image) }}" alt="">
+                    @endif
+                    <br>
                     <p>{{ $post->content }}</p>
                     <p>
                         <i class="fas fa-tags"></i>

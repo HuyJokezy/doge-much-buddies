@@ -16,6 +16,10 @@
                     <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
                     @endif
                     <div class="dropdown-divider"></div>
+                    @if ($post->image)
+                    <img class="d-block w-100" src="{{ asset('storage/'. $post->image) }}" alt="">
+                    @endif
+                    <br>
                     @if (strlen($post->content) < 250)
                         <p>{{ $post->content }}</p>
                     @else
@@ -25,7 +29,7 @@
                     <p>
                         <i class="fas fa-tags"></i>
                         @foreach ($post->tags as $tag)
-                            <a href="#">{{ $tag->dog->name }}</a>,
+                            <a href="/dog/{{ $tag->dog->id }}">{{ $tag->dog->name }}</a>,
                         @endforeach
                     </p>
                     @endif

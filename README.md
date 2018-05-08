@@ -20,6 +20,9 @@ php artisan db:seed --class=DogImageSeed
 php artisan db:seed --class=PostReactSeeder
 php artisan db:seed --class=PostCommentSeeder
 php artisan db:seed --class=PostTagSeeder
+php artisan db:seed --class=Seeder
+php artisan db:seed --class=FollowSeeder
+php artisan db:seed --class=FriendSeeder
 
 // Link Storage
 php artisan storage:link

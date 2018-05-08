@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +14,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // $user = \Auth::user();
+    return redirect()->route('home');
+    // return view('welcome');
 });
 
 Auth::routes();

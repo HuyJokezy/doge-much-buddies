@@ -5,9 +5,9 @@
   <br><br>
   <div class="row">
     @if ($dog->profile_image == null)
-      <img src="{{ asset('storage/dogs/noimage.jpg') }}" class="col-6"></img>
+      <img style="max-height: 500px;" src="{{ asset('storage/dogs/noimage.jpg') }}" class="col-6"></img>
     @else
-      <img src="{{ asset('storage/' . $dog->profile_image) }}" class="col-6"></img>
+      <img style="max-height: 500px;" src="{{ asset('storage/' . $dog->profile_image) }}" class="col-6"></img>
     @endif
     <div class="col-6">
       <h4>{{ $dog->name }}</h4>
