@@ -9,12 +9,17 @@
                 <a href="{{ route('post.create') }}">+ New post</a>
             </div>
             @foreach ($posts as $index=>$post)
-                <div class="card card-body" id="post{{ $post->id }}">
-                    @if ($post->owner->id === \Auth::user()->id)
-                    <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
-                    @else
-                    <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
-                    @endif
+                <div class="card card-body" id="post{{ $post->id }}">               
+                    <div class="row">
+                        <div class="col-6">
+                        @if ($post->owner->id === \Auth::user()->id)
+                        <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
+                        @else
+                        <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
+                        @endif
+                        </div>
+                        <div class="col-6"><i class="fas fa-book float-right" onclick="window.location.href='/post/{{ $post->id }}'"></i></div>
+                    </div>
                     <div class="dropdown-divider"></div>
                     @if ($post->image)
                     <img class="d-block w-100" src="{{ asset('storage/'. $post->image) }}" alt="">

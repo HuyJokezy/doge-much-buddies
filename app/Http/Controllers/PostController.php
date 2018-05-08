@@ -145,7 +145,8 @@ class PostController extends Controller
             // if (!$this->checkAuth($user, $post)){
             //     
             // }
-            $post->isOwner = $this->checkAccess($user, $post);
+            $post->isOwner = $this->checkAuth($user, $post);
+            $post->canAccess = $this->checkAccess($user, $post);
             //Get owner info
             $postOwner = DB::select('select users.* 
                                 from users
@@ -216,7 +217,13 @@ class PostController extends Controller
         if (!$this->checkAuth($user, $post)){
             abort(403, "Unauthorized access.");
         }
-        return view('post.edit');
+        $followedDogs = DB::select('select dogs.* 
+                                from dogs
+                                where dogs.owner=' . $user->id);
+        return view('post.edit', [
+            'post'=>$post,
+            'followedDogs'=>$followedDogs
+        ]);
     }
 
     /**
@@ -278,7 +285,7 @@ class PostController extends Controller
         }
         $post = Post::find($post);
 
-        if ($post->image != 'posts/noimage.jpg'){
+        if ($post->image != ''){
             Storage::delete('public/' . $post->image);
         }
         $post->delete();

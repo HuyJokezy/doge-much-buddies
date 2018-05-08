@@ -3,8 +3,33 @@
 @section('content')
 <div class="container"><br><br>
   <div class="card card-body" id="post{{ $post->id }}">
+                    <div class="modal fade" id="postDelete{{ $post->id }}" tabindex="-1" role="dialog" aria-labelledby="postDeleteLabel{{ $post->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="postDeleteLabel{{ $post->id }}">Warning?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                            <p>You sure want to delete the post?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" onclick="deletePost({{ $post->id }})"class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                     @if ($post->isOwner)
-                    <h6>{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
+                    <div class="row">
+                        <h6 class="col-6">{{ $post->owner->name }} <small>at {{ $post->created_at }}</small></h6>
+                        <div class="col-6">
+                            <i class="far fa-trash-alt float-right" data-toggle="modal" data-target="#postDelete{{ $post->id }}"></i>
+                            <i class="far fa-edit float-right" onclick="editPost({{ $post->id }})"></i>
+                        </div>
+                    </div>
                     @else
                     <h6><a href="/user/{{ $post->owner->id }}">{{ $post->owner->name }} </a><small>at {{ $post->created_at }}</small></h6>
                     @endif
@@ -23,20 +48,20 @@
                     <div class="dropdown-divider"></div>
                     <div class="row">
                         <div class="col-1 reactionIcon">
-                            <i id="laugh{{ $post->id }}" class="far fa-smile" onclick="toggleReaction({{ $post->id }}, 'Laugh')"></i>
+                            <i id="laugh{{ $post->id }}" class="far fa-smile reactButton" onclick="toggleReaction({{ $post->id }}, 'Laugh')"></i>
                             <span id="laughCount{{ $post->id }}" class="reactionInfo"> {{ $post->laughCount }}</span>
                         </div>
                         <div class="col-1 reactionIcon">
-                            <i id="like{{ $post->id }}" class="far fa-thumbs-up" onclick="toggleReaction({{ $post->id }}, 'Like')"></i>
+                            <i id="like{{ $post->id }}" class="far fa-thumbs-up reactButton" onclick="toggleReaction({{ $post->id }}, 'Like')"></i>
                             <span id="likeCount{{ $post->id }}" class="reactionInfo"> {{ $post->likeCount }}</span>
                         </div>
                         <div class="col-1 reactionIcon">
-                            <i id="love{{ $post->id }}" class="far fa-heart" onclick="toggleReaction({{ $post->id }}, 'Love')"></i>
+                            <i id="love{{ $post->id }}" class="far fa-heart reactButton" onclick="toggleReaction({{ $post->id }}, 'Love')"></i>
                             <span id="loveCount{{ $post->id }}" class="reactionInfo"> {{ $post->loveCount }}</span>
                         </div>
                     </div>
                     <div class="dropdown-divider"></div>
-                    @if ($post->isOwner)
+                    @if ($post->canAccess)
                     <div class="card card-body">
                         <textarea class="form-control" id="content" rows="3"></textarea>
                         <br>
@@ -66,7 +91,7 @@
 <script type="text/javascript">
         let yourPostReactions = {};
 
-        $('i').mouseover(function(){
+        $('.reactButton').mouseover(function(){
             $(this).removeClass('far').addClass('fas');
         }).mouseout(function(){
             let postId = $(this).attr('id').replace(/\D/g,'');
@@ -82,7 +107,6 @@
      
 
         (function () {
-            
                 @if ($post->yourReaction == 'Laugh')
                     $('#laugh' + {{ $post->id }}).addClass('fas').removeClass('far');
                     yourPostReactions['{{ $post->id }}'] = 'Laugh';
@@ -141,6 +165,17 @@
                     yourPostReactions[id.toString()] = type;
                 })
             }
+        }
+
+        function deletePost(id) {
+            console.log(id);
+            axios.delete(`/post/${ id }`, []).then(response => {
+                if (response.status === 200) location.reload();
+            });
+        }
+
+        function editPost(id) {
+            window.location.href = `/post/${ id }/edit`;
         }
     </script>
 
