@@ -170,7 +170,7 @@
         function deletePost(id) {
             console.log(id);
             axios.delete(`/post/${ id }`, []).then(response => {
-                if (response.status === 200) location.reload();
+                if (response.status === 200) window.location.href = '/home';
             });
         }
 

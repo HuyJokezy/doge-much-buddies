@@ -280,11 +280,12 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $user = Auth::user();
-        if (!$this->$this->checkAuth($user, $post)){
+        if (!$this->checkAuth($user, $post)){
             abort(403, "Unauthorized access.");
         }
-        $post = Post::find($post);
 
+        // $post = Post::find($post->id);
+        
         if ($post->image != ''){
             Storage::delete('public/' . $post->image);
         }
