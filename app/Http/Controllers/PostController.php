@@ -79,12 +79,14 @@ class PostController extends Controller
            // Upload image
            $path = $request->file('postimg')->storeAs('public/posts/', $fileNameToStore);
         } else {
-            $fileNameToStore = 'noimage.jpg';
+            $fileNameToStore = '';
         }
 
         $post = new Post;
         $post->content = $request->input('content');
-        $post->image = 'posts/' . $fileNameToStore;
+        if ($request->hasFile('postimg')) {
+            $post->image = 'posts/' . $fileNameToStore;
+        }
         $post->owner = $user->id;
         
         $post->save();
@@ -279,7 +281,11 @@ class PostController extends Controller
         if ($post->image != 'posts/noimage.jpg'){
             Storage::delete('public/' . $post->image);
         }
-        $dog->delete();
-        return redirect('/home/')->with('success', 'Successfully deleted.');
+        $post->delete();
+        // return redirect('/home/')->with('success', 'Successfully deleted.');
+        $result = array (
+            'status' => 'success',
+        );
+        return $result;
     }
 }

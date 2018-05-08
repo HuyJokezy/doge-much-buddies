@@ -72,15 +72,21 @@
   }
 
   function post() {
-    console.log(1);
     let content = document.getElementById('content').value;
     let tags = taggedDogs.map((taggedDog) => taggedDog.id);
-    let postimg = document.getElementById('postimg').files[0];
-    let data = new FormData();
-    data.append('content', content);
-    data.append('tags', JSON.stringify(tags));
-    data.append('postimg', postimg);
-    console.log(postimg);
+    let data = new FormData();    
+    if (document.getElementById('postimg').files.length != 0){
+      let postimg = document.getElementById('postimg').files[0];
+      data.append('content', content);
+      data.append('tags', JSON.stringify(tags));
+      data.append('postimg', postimg);
+      console.log(postimg);
+    }
+    else {
+      data.append('content', content);
+      data.append('tags', JSON.stringify(tags));
+    }
+    
     const config = {
         headers: { 'content-type': 'multipart/form-data' }
     }

@@ -169,7 +169,9 @@
   }
 
   function deleteDog(id) {
-    axios.delete(`/dog/${ id }`, []);
+    axios.delete(`/dog/${ id }`, []).then(response => {
+      if (response.status === 200) location.reload();
+    });
   }
 </script>
 @endsection

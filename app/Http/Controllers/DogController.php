@@ -246,6 +246,10 @@ class DogController extends Controller
             Storage::delete('public/' . $dog->profile_image);
         }
         $dog->delete();
-        return redirect('/user/' . $user->id . '/myDog')->with('success', 'You abadoned your dog :(');
+        // return redirect('/user/' . $user->id . '/myDog')->with('success', 'You abadoned your dog :(');
+        $result = array (
+            'status' => 'success',
+        );
+        return $result;
     }
 }
