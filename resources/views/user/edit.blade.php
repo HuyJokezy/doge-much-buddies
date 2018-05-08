@@ -4,6 +4,12 @@
 
 <div class="container">
     <br><br>
+    @if ($user->profile_image)
+        <img class="d-block w-100" src="{{ asset('storage/user_profile/profileimgs/'. $user->profile_image) }}" alt="">
+    @else
+        <img class="d-block w-100" src="{{ asset('storage/dogs/noimage.jpg') }}" alt="">
+    @endif
+    <br>
     <form action="{{route('user.update', $user->id)}}" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Name</label>

@@ -37,7 +37,7 @@
     <div class="col-5">
       <p><a href="#" onclick="openChangeDogInfoModal()" class="btn btn-success btn-block">Change Information</a></p>
       <p><a href="#" class="btn btn-primary btn-block">View Tagged Posts</a></p>
-      <p><a href="#" class="btn btn-danger btn-block">Delete</a></p>
+      <p><a href="#" onclick="openDeleteDogModal()" class="btn btn-danger btn-block">Delete</a></p>
       <br>
       <p style="text-align: center;">or</p>
       <br>
@@ -50,9 +50,10 @@
 <!-- Modal Hidden Button -->
 @foreach ($dogs as $index=>$dog)
   <button id="modalButton{{ $index }}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#dogInfo{{ $index }}" style="display: none"></button>
+  <button id="modalButtonDelete{{ $index }}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#dogDelete{{ $index }}" style="display: none"></button>
 @endforeach
 
-<!-- Modal View-->
+<!-- Modal View -->
 @foreach ($dogs as $index=>$dog)
   <div class="modal fade" id="dogInfo{{ $index }}" tabindex="-1" role="dialog" aria-labelledby="dogInfoLabel{{ $index }}" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -129,6 +130,30 @@
   </div>
 @endforeach
 
+<!-- Modal Delete -->
+@foreach ($dogs as $index=>$dog)
+  <div class="modal fade" id="dogDelete{{ $index }}" tabindex="-1" role="dialog" aria-labelledby="dogDeleteLabel{{ $index }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="dogDeleteLabel{{ $index }}">Are you leaving?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>I understand that you heard that call from the wild, but can we talk about it?</p>
+          <p>The pack will always be here waiting for you</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Stay with us</button>
+          <button type="button" onclick="deleteDog({{ $dogs[$index]->id }})"class="btn btn-danger">Good byeee!!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+@endforeach
+
 @endsection
 
 @section('script')
@@ -136,6 +161,15 @@
   function openChangeDogInfoModal() {
     const currentDogId = parseInt(document.getElementsByClassName('active')[0].id.replace('dog', ''));
     document.getElementById(`modalButton${currentDogId}`).click()
+  }
+
+  function openDeleteDogModal() {
+    const currentDogId = parseInt(document.getElementsByClassName('active')[0].id.replace('dog', ''));
+    document.getElementById(`modalButtonDelete${currentDogId}`).click()
+  }
+
+  function deleteDog(id) {
+    axios.delete(`/dog/${ id }`, []);
   }
 </script>
 @endsection
